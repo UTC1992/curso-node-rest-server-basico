@@ -13,10 +13,11 @@ class Server {
     this.routes();
   }
 
-  middlewares() {
+  middlewares() { //se pueden poner varios middlewares
     //cors
     this.app.use( cors() );
-
+    //lectura y parseo del body
+    this.app.use( express.json() );
     //directorio publico
     this.app.use( express.static( 'public' ) );
   }
