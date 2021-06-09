@@ -20,7 +20,7 @@ const UsuarioSchema = Schema({
   rol: {
     type: String,
     required: true,
-    enum: ['ADMIN_ROLE', 'USER_ROLE']
+    //enum: ['ADMIN_ROLE', 'USER_ROLE']
   },
   estado: {
     type: Boolean,
@@ -31,6 +31,16 @@ const UsuarioSchema = Schema({
     default: false
   }
 });
+
+//debe ser una funcion normal
+//porque una funcion de flecha no me permite apuntar o usar el objeto
+// => this
+UsuarioSchema.methods.toJSON = function() {
+  //estoy sacando los campos que no deseo mostrar 
+  //y los demas se almacenan en usuario
+  const { __v, password, ...usuario } = this.toObject();
+  return usuario;
+}
 
 //el nombre de la tabla en singular o si se desea se puede confugurar
 module.exports = model( 'Usuario', UsuarioSchema );
