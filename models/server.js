@@ -1,6 +1,8 @@
 const express = require('express');
 const cors = require('cors');
 const { dbConnection } = require('../database/config');
+const swaggerUi = require('swagger-ui-express');
+const specs = require('../middlewares/swagger');
 
 class Server {
   
@@ -26,6 +28,8 @@ class Server {
   middlewares() { //se pueden poner varios middlewares
     //cors
     this.app.use( cors() );
+    //swagger
+    //this.app.use( "/api-docs", swaggerUi.serve, swaggerUi.setup( specs ) );
     //lectura y parseo del body
     this.app.use( express.json() );
     //directorio publico
