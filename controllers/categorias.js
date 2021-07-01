@@ -20,7 +20,7 @@ const obtenerCategorias = async ( req = request, res = response ) => {
 
 const obtenerCategoria = async ( req = request, res = response ) => {
   const { id } = req.params;
-  const categoria = await Categoria.findById( id ).populate( 'usuario' );
+  const categoria = await Categoria.findById( id ).populate( 'usuario', 'nombre' );
   res.status( 200 ).json(categoria);
 }
 
@@ -44,12 +44,33 @@ const crearCategoria = async ( req = request, res = response ) => {
   res.status( 201 ).json( categoria );
 }
 
-const actualizarCategoria = ( req = request, res = response ) => {
+const actualizarCategoria = async ( req = request, res = response ) => {
+  const { id } = req.params;
+  const { estado, usuario, ...data } = req.body;
 
+  data.nombre = data.nombre.toUpperCase();
+  data.usuario = req.usuario._id;
+
+  const { nombre } = data;
+
+  const categoriaDB = await Categoria.findOne({ nombre });
+  if ( categoriaDB ) {
+    return res.status( 400 ).json({
+      msg: `La categoría ${categoriaDB.nombre}, ya existe`,
+    });
+  }
+
+  // el new: true es para que retorne el archivo nuevo osea el archivo ya editado
+  const categoria = await Categoria.findByIdAndUpdate( id, data, { new: true } ); 
+  res.json( categoria );
 }
 
-const borrarCategoria = ( req = request, res = response ) => {
+const borrarCategoria = async ( req = request, res = response ) => {
+  const { id } = req.params;
 
+  const categoria = await Categoria.findByIdAndUpdate( id, { estado: false }, { new: true } );
+  
+  res.json(categoria);
 }
 
 module.exports = {
