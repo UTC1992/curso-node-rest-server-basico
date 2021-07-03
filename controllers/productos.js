@@ -28,8 +28,9 @@ const obtenerProducto = async ( req = request, res = response ) => {
 }
 
 const crearProducto = async ( req = request, res = response ) => {
-  const { nombre, precio, categoria, descripcion } = req.body;
-  
+  const { estado, usuario, ...body } = req.body;
+  const nombre = body.nombre.toUpperCase();
+
   const ProductoDB = await Producto.findOne({ nombre });
   if ( ProductoDB ) {
     return res.status( 400 ).json({
@@ -39,10 +40,8 @@ const crearProducto = async ( req = request, res = response ) => {
   
   // generar data a guardar
   const data = {
+    ...body,
     nombre,
-    precio,
-    categoria,
-    descripcion,
     usuario: req.usuario._id,
   };
 
@@ -56,6 +55,10 @@ const actualizarProducto = async ( req = request, res = response ) => {
   const { id } = req.params;
 
   const { estado, usuario, ...data } = req.body;
+
+  if ( data.nombre ) {
+    data.nombre = data.nombre.toUpperCase();
+  }
   data.usuario = req.usuario._id;
 
   // el new: true es para que retorne el archivo nuevo osea el archivo ya editado
@@ -66,9 +69,9 @@ const actualizarProducto = async ( req = request, res = response ) => {
 const borrarProducto = async ( req = request, res = response ) => {
   const { id } = req.params;
 
-  const producto = await Producto.findByIdAndUpdate( id, { estado: false }, { new: true } );
+  const productoBorrado = await Producto.findByIdAndUpdate( id, { estado: false }, { new: true } );
   
-  res.json(producto);
+  res.json(productoBorrado);
 }
 
 module.exports = {
