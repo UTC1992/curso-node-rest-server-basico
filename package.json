@@ -19,7 +19,9 @@
     "google-auth-library": "^7.1.2",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.12.13",
+    "nodemon": "^2.0.9",
     "swagger-jsdoc": "^6.1.0",
     "swagger-ui-express": "^4.1.6"
-  }
+  },
+  "type": "commonjs"
 }
