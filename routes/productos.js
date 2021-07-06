@@ -6,7 +6,7 @@ const {
   obtenerProducto,
   actualizarProducto,
   borrarProducto,
-} = require('../controllers/Productos');
+} = require('../controllers/productosController');
 const { existeProductoPorId, existeCategoriaPorId } = require('../helpers/db-validators');
 const { validarCampos, validarJWT, esAdminRole } = require('../middlewares');
 
