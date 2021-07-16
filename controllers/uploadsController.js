@@ -94,13 +94,15 @@ const mostrarImagen = async ( req = request, res = response ) => {
       return res.status(500).json({msg: 'Se me olvido validar esto.'})
   }
 
-  // Limpiar imagenes previas
+  // if ( modelo.img ) {
+  //   const pathImagen = path.join( __dirname, '../uploads', coleccion, modelo.img );
+  //   if ( fs.existsSync( pathImagen )) {
+  //     return res.sendFile( pathImagen );
+  //   }
+  // }
+
   if ( modelo.img ) {
-    // hay que borrar la imagen del sever
-    const pathImagen = path.join( __dirname, '../uploads', coleccion, modelo.img );
-    if ( fs.existsSync( pathImagen )) {
-      return res.sendFile( pathImagen );
-    }
+    return res.json({ img: modelo.img });
   }
 
   const pathImagen = path.join( __dirname, '../assets/no-image.jpg' );
